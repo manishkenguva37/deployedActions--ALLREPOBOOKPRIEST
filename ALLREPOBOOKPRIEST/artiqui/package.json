@@ -9,6 +9,11 @@
     "prepare": "husky install",
     "watch": "chokidar \"src/**/*.{vue,js}\" \"assets/sass/**/*.{scss}\" -c \"npm run build\""
   },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md"
+  ],
   "dependencies": {
     "bootstrap": "^4.6.2",
     "core-js": "^3.8.3",
