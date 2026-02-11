@@ -1,5 +1,8 @@
-@import 'artiqui/assets/sass/main.scss';
-@import '@/assets/sass/main.scss';
+// @import 'artiqui/assets/sass/main.scss';
+// @import '@/assets/sass/main.scss';
+
+@import "artiqui-sass/main.scss";  // points to artiqui SCSS
+@import "@/assets/sass/main.scss"; 
 
 
 

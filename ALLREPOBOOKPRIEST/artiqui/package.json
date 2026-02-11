@@ -16,6 +16,7 @@
     "README.md"
   ],
   "exports": {
+    "./dist/*": "./dist/*",
     "./assets/sass/themes/*": "./assets/sass/themes/*.scss",
     "./assets/sass/*": "./assets/sass/*.scss",
     "./main": "./assets/sass/main.scss"
