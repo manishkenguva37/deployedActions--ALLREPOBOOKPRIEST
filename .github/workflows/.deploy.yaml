@@ -22,19 +22,19 @@ jobs:
         with:
           node-version: 20
 
-      # Build and link artiqui
+      # Build artiqui and pack it
       - name: Build artiqui
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
           npm run build
-          npm link
+          npm pack  # creates artiqui-<version>.tgz
 
-      # Link artiqui into book_priest
+      # Build book_priest with packed artiqui
       - name: Build book_priest
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          npm link artiqui
+          npm install ../artiqui/artiqui-*.tgz
           npm install
           npm run build
 
