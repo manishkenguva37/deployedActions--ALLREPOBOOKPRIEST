@@ -24,21 +24,19 @@ jobs:
         with:
           node-version: 20
 
-      # 3️⃣ Build and pack artiqui
-      - name: Build artiqui and pack
+      # 3️⃣ Install and build artiqui
+      - name: Install and Build artiqui
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
-          npm run build      # ensure dist/ exists
-          npm pack           # creates artiqui-<version>.tgz
+          npm run build
 
-      # 4️⃣ Install book_priest dependencies including packed artiqui
+      # 4️⃣ Install book_priest dependencies (including local artiqui) and build
       - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          npm install ../artiqui/artiqui-*.tgz   # install built artiqui
-          npm install                             # install remaining deps
-          npm run build                           # build book_priest
+          npm install          # Will install local "artiqui" from ../artiqui
+          npm run build         # Build book_priest
 
       # 5️⃣ Install Vercel CLI
       - name: Install Vercel CLI
