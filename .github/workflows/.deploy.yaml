@@ -1,1 +1,41 @@
 name: Vercel Production NAME REPO Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  buildBOOKAPP:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install ALLBOOK
+        run: |
+          cd ALLBOOK
+          
+
+      - name: Build artiqui
+        run: |
+          cd artiqui
+          npm install
+          npm run build
+          cd ..
+
+      - name: Build book_priest
+        run: |
+          cd book_priest
+          npm install
+          npm run build
