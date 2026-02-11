@@ -36,7 +36,7 @@ jobs:
       - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          npm install ../artiqui/artiqui-*.tgz  # Install built artiqui
+          npm install artiqui
           npm install                             # Install remaining deps
           npm run build                           # Build book_priest
 
