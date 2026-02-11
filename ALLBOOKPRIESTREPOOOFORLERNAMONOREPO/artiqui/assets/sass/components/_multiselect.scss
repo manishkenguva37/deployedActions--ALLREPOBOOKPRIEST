@@ -1,0 +1,79 @@
+.au-multiselect-wrapper {
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+.au-multiselect {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: $primary-tint-1;
+  border: 1px solid $primary-tint-2;
+  color: $primary-shade-4;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &__placeholder {
+    color: $primary-shade-2;
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: $primary-tint-1;
+    border: 1px solid $primary-tint-2;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba($primary-shade-4, 0.1);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  &__option {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $primary-tint-3;
+    }
+  }
+
+  &__checkbox {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border: 2px solid $primary-shade-1;
+    border-radius: 3px;
+    background-color: transparent;
+    appearance: none;
+
+    &:checked {
+      background-color: $primary-shade-1;
+      border-color: $primary-shade-1;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 6px;
+        height: 11px;
+        border: solid $primary-tint-1;
+        border-width: 0 2.5px 2.5px 0;
+        transform: rotate(45deg);
+        top: 1px;
+        left: 4px;
+      }
+    }
+  }
+}

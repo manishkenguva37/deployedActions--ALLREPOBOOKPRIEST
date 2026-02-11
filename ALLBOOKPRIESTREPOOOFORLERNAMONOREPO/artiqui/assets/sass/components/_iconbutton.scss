@@ -1,0 +1,40 @@
+.au-icon-input {
+  .input-group {
+    &:focus-within {
+      .input-group-text {
+       
+        color: $primary-shade-2; // brighter color for icon on focus
+        border-color: $primary-tint-2;
+      }
+    }
+  }
+
+  .form-control {
+    
+    color: $primary-shade-4;
+    border-color: $primary-tint-3;
+
+    
+
+    &:focus {
+      border-color: $primary-tint-2;
+      box-shadow: 0 0 0 0.25rem $primary-tint-1;
+    }
+  }
+
+  .input-group-text {
+    background-color: $primary-tint-2;
+    color: $primary-shade-4;
+    border-color: $primary-tint-3;
+    transition: all 0.2s ease;
+  }
+
+  .is-invalid {
+    border-color: $primary-shade-3 !important;
+    box-shadow: 0 0 0 0.25rem rgba(29, 78, 216, 0.25) !important;
+  }
+
+  .invalid-feedback {
+    color: $primary-shade-3;
+  }
+}

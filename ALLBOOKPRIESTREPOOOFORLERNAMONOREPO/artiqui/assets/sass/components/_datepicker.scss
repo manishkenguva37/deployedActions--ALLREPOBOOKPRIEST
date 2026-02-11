@@ -1,0 +1,131 @@
+
+
+
+.au-datepicker-wrapper {
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+.au-datepicker {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: $primary-tint-1;
+  border: 1px solid $primary-tint-2;
+  color: $primary-shade-4;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-shade-1;
+    box-shadow: 0 0 0 2px rgba($primary-shade-1, 0.2);
+  }
+
+  &--primary {
+    border-color: $primary-shade-1;
+  }
+
+  &--secondary {
+    border-color: $primary-shade-2;
+  }
+
+  &--outline {
+    border-color: $primary-tint-2;
+    background-color: transparent;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Customize flatpickr calendar */
+  & + .flatpickr-calendar {
+    background-color: $primary-tint-1;
+    border: 1px solid $primary-tint-2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba($primary-shade-4, 0.15);
+    font-family: 'Poppins', sans-serif;
+
+    .flatpickr-day {
+      color: $primary-shade-4;
+      border-radius: 4px;
+
+      &.selected,
+      &.startRange,
+      &.endRange {
+        background-color: $primary-shade-1;
+        border-color: $primary-shade-1;
+        color: $primary-tint-1;
+        font-weight: 600;
+      }
+
+      &:hover {
+        background-color: $primary-tint-3;
+        border-color: $primary-tint-3;
+      }
+
+      &.disabled,
+      &.disabled:hover {
+        background-color: transparent;
+        color: rgba($primary-shade-4, 0.3);
+        cursor: not-allowed;
+      }
+
+      &.today {
+        border-color: $primary-shade-2;
+        background-color: $primary-tint-2;
+      }
+    }
+
+    .flatpickr-monthDropdown-months,
+    .flatpickr-year {
+      color: $primary-shade-4;
+      background-color: $primary-tint-1;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: $primary-tint-3;
+      }
+    }
+
+    .flatpickr-prev-month,
+    .flatpickr-next-month {
+      color: $primary-shade-1;
+      fill: $primary-shade-1;
+
+      &:hover {
+        color: $primary-shade-3;
+        fill: $primary-shade-3;
+      }
+    }
+
+    .flatpickr-weekdays .flatpickr-weekday {
+      color: $primary-shade-4;
+      font-weight: 600;
+    }
+  }
+}
+
+.au-datepicker__shortcuts {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.au-datepicker__shortcut {
+  background-color: $primary-tint-1;
+  border: 1px solid $primary-tint-2;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: $primary-shade-4;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $primary-tint-3;
+  }
+}

@@ -1,0 +1,132 @@
+.au-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  border: 2px solid $primary-shade-1;
+  border-radius: 3px;
+  background-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+
+  /* Remove default browser outline and focus styles */
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($primary-shade-1, 0.3);
+  }
+
+  /* Checked state */
+  &--checked {
+    border-color: $primary-shade-1;
+    background-color: $primary-shade-1;
+
+    /* Larger checkmark */
+    &::after {
+      content: '';
+      position: absolute;
+      width: 6px; /* Increased from 5px */
+      height: 11px; /* Increased from 9px */
+      border: solid $primary-tint-1; /* White checkmark */
+      border-width: 0 2.5px 2.5px 0; /* Bolder tick */
+      transform: rotate(45deg);
+      top: 1px; /* Adjusted for centering */
+      left: 4px; /* Adjusted for centering */
+    }
+  }
+
+  /* Disabled state */
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    border-color: $primary-tint-2;
+    background-color: transparent;
+
+    &--checked {
+      background-color: $primary-tint-2;
+      border-color: $primary-tint-2;
+
+      &::after {
+        border-color: $primary-shade-4; /* Darker checkmark for disabled */
+      }
+    }
+  }
+
+  /* Size variants */
+  &--small {
+    width: 12px;
+    height: 12px;
+
+    &--checked::after {
+      width: 4px; /* Increased from 4px */
+      height: 8px; /* Increased from 7px */
+      border-width: 0 2px 2px 0; /* Slightly thinner for small size */
+      top: 0;
+      left: 3px;
+    }
+  }
+
+  &--medium {
+    width: 16px;
+    height: 16px;
+  }
+
+  &--large {
+    width: 20px;
+    height: 20px;
+
+    &--checked::after {
+      width: 7px; /* Increased from 6px */
+      height: 13px; /* Increased from 11px */
+      border-width: 0 3px 3px 0; /* Bolder for large size */
+      top: 2px;
+      left: 6px;
+    }
+  }
+
+  /* Variant styles */
+  &--primary {
+    border-color: $primary-shade-1;
+
+    &--checked {
+      background-color: $primary-shade-1;
+      border-color: $primary-shade-1;
+    }
+  }
+
+  &--secondary {
+    border-color: $primary-shade-2;
+
+    &--checked {
+      background-color: $primary-shade-2;
+      border-color: $primary-shade-2;
+    }
+  }
+
+  &--outline {
+    border-color: $primary-tint-2;
+    background-color: transparent;
+
+    &--checked {
+      background-color: transparent;
+      border-color: $primary-base;
+
+      &::after {
+        border-color: $primary-base;
+      }
+    }
+  }
+}
+
+.au-checkbox__label {
+  margin-left: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: $primary-shade-4;
+  cursor: pointer;
+}

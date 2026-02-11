@@ -1,0 +1,47 @@
+.au-select-wrapper {
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+.au-select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: $primary-tint-1;
+  border: 1px solid $primary-tint-2;
+  color: $primary-shade-4;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E40AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-shade-1;
+    box-shadow: 0 0 0 2px rgba($primary-shade-1, 0.2);
+  }
+
+  &--primary {
+    border-color: $primary-shade-1;
+  }
+
+  &--secondary {
+    border-color: $primary-shade-2;
+  }
+
+  &--outline {
+    border-color: $primary-tint-2;
+    background-color: transparent;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

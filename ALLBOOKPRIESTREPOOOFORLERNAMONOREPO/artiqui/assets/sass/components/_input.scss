@@ -1,0 +1,89 @@
+
+
+.au-text-input-wrapper {
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+}
+
+.au-text-input__label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: $primary-shade-4;
+  margin-bottom: 8px;
+}
+
+.au-text-input__container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.au-text-input__icon {
+  font-size: 1.5rem;
+  color: $primary-shade-4;
+  margin: 0 8px;
+  transition: color 0.2s ease;
+
+  .au-text-input:focus + & {
+    color: $primary-shade-1;
+  }
+}
+
+.au-text-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: $primary-tint-1;
+  border: 1px solid $primary-tint-2;
+  color: $primary-shade-4;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &::placeholder {
+    color: $primary-shade-2;
+    opacity: 0.7;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-shade-1;
+    box-shadow: 0 0 0 2px rgba($primary-shade-1, 0.2);
+  }
+
+  &--primary {
+    border-color: $primary-shade-1;
+
+    &:focus {
+      border-color: $primary-shade-1;
+    }
+  }
+
+  &--secondary {
+    border-color: $primary-shade-2;
+
+    &:focus {
+      border-color: $primary-shade-2;
+    }
+  }
+
+  &--outline {
+    border-color: $primary-tint-2;
+    background-color: transparent;
+
+    &:focus {
+      border-color: $primary-base;
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: $primary-tint-2;
+    border-color: $primary-tint-3;
+  }
+
+  &--with-icon {
+    padding-left: 36px; /* Space for icon */
+  }
+}

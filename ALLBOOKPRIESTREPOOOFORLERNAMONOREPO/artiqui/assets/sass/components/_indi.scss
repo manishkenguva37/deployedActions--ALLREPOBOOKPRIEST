@@ -1,0 +1,153 @@
+
+.verification-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px; // Centered card look
+  margin: auto;
+}
+
+.verification-card-header {
+  background-color: $primary-tint-1;
+  padding: 1rem 1.25rem;
+}
+
+.title {
+  margin: 0;
+  font-weight: 600;
+  color: $primary-shade-4;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.icon-primary {
+  color: $primary-base;
+  margin-right: 0.5rem;
+}
+
+.verification-card-body {
+  padding: 1.25rem;
+}
+
+.progress-section {
+  margin-bottom: 1rem;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: $primary-shade-3;
+  font-weight: 500;
+}
+
+.progress-track {
+  background-color: $primary-tint-3;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background-color: $primary-base;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.verification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.verification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  gap: 1rem;
+}
+
+.verification-item:last-child {
+  border-bottom: none;
+}
+
+.verification-item-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.icon-verified {
+  color: $primary-shade-2;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.icon-pending {
+  color: $primary-shade-3;
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.label-text {
+  font-weight: 500;
+  color: $primary-shade-4;
+}
+
+.status-badge {
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.badge-verified {
+  background-color: $primary-tint-1;
+  color: $primary-shade-4;
+}
+
+.badge-pending {
+  background-color: $primary-shade-1;
+  color: white;
+}
+
+/* 📱 Mobile adjustments */
+@media (max-width: 480px) {
+  .verification-card {
+    border-radius: 0.5rem;
+    max-width: 100%;
+  }
+
+  .verification-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-badge {
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
+/* 💻 Larger screens spacing */
+@media (min-width: 768px) {
+  .verification-card-body {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+}

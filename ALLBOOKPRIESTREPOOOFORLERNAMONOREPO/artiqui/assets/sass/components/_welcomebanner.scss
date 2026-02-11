@@ -1,0 +1,88 @@
+
+.au-hero-wrapper {
+  font-family: 'Poppins', sans-serif;
+  padding: 2.5rem 0;
+}
+
+.au-hero {
+  background-color: $primary-tint-1;
+  border: 1px solid $primary-shade-1;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.25rem 0.75rem rgba($primary-shade-4, 0.05);
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+
+  &--primary {
+    border-color: $primary-shade-1;
+  }
+
+  &--secondary {
+    border-color: $primary-shade-2;
+  }
+
+  &--outline {
+    border-color: $primary-tint-2;
+    background-color: transparent;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.au-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.au-hero__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: $primary-shade-4;
+  margin-bottom: 0.5rem;
+}
+
+.au-hero__username {
+  color: $primary-base;
+  font-weight: 600;
+}
+
+.au-hero__subtitle {
+  font-size: 1.15rem;
+  color: $primary-shade-2;
+  margin: 0;
+}
+
+.au-hero__badge-wrapper {
+  flex-shrink: 0;
+}
+
+.au-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: $primary-shade-2;
+  color: $primary-tint-1;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 50rem;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $primary-shade-3;
+  }
+
+  .bi-check-circle {
+    font-size: 1.2rem;
+    color: $primary-tint-1;
+  }
+}
+

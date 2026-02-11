@@ -1,0 +1,56 @@
+.au-table-wrapper {
+  font-family: 'Poppins', sans-serif;
+  color: $primary-shade-4;
+}
+
+.au-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $primary-tint-1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.au-table__header {
+  background-color: $primary-tint-2;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: $primary-shade-4;
+  border-bottom: 1px solid $primary-tint-3;
+
+  &--sortable {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $primary-tint-3;
+    }
+  }
+
+  &--select {
+    width: 50px;
+    text-align: center;
+  }
+}
+
+.au-table__cell {
+  padding: 12px;
+  border-bottom: 1px solid $primary-tint-3;
+
+  &--select {
+    width: 50px;
+    text-align: center;
+  }
+}
+
+.au-table__row {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: $primary-tint-3;
+  }
+
+  &--selected {
+    background-color: $primary-tint-4;
+  }
+}

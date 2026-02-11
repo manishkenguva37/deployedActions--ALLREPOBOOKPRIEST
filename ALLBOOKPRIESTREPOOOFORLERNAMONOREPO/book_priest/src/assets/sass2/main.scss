@@ -1,0 +1,26 @@
+@import 'artiqui/assets/sass/main.scss';
+@import '@/assets/sass/main.scss';
+
+
+
+// const theme = process.env.VITE_VUE_APP_THEME || 'theme1';
+
+// export default defineConfig({
+//   css: {
+//     preprocessorOptions: {
+//       scss: {
+//         additionalData: `
+//           @import "artiqui/src/assets/sass/themes/${theme}";
+//         `
+//       }
+//     }
+//   }
+// });
+// resolve: {
+//   alias: {
+//     '@': path.resolve(__dirname, './src'),
+//     '@artiqui': path.resolve(__dirname, './node_modules/artiqui')
+//   }
+// }
+// $theme: "theme1" !default;
+// @import "@artiqui/assets/sass/themes/#{$theme}";

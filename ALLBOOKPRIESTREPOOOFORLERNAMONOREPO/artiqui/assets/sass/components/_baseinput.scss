@@ -1,0 +1,11 @@
+
+.base-input input {
+  padding: 0.5rem;
+  border: 1px solid $primary-tint-2;
+  border-radius: 4px;
+  width: 100%;
+  &:focus {
+    outline: none;
+    border-color: $primary-base;
+  }
+}

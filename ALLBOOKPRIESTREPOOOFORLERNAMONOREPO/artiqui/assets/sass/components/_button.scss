@@ -1,0 +1,62 @@
+.au-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  border-radius: 16px;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &--primary {
+    background-color: $primary-base;
+    color: $primary-shade-4;
+    border: none;
+
+    &:hover:not(.au-button--disabled) {
+      background-color: $primary-shade-1;
+    }
+  }
+
+  &--secondary {
+    background-color: $primary-shade-4;
+    color: $primary-base; // Changed text color to primary-base for contrast
+    border: none;
+
+    &:hover:not(.au-button--disabled) {
+      background-color: lighten($primary-shade-4, 10%); // Adjusted hover for secondary
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    border: 1px solid $primary-tint-1;
+    color: $primary-base;
+
+    &:hover:not(.au-button--disabled) {
+      background-color: $primary-tint-1; // Fill with the outline color on hover
+      color: $primary-shade-4; // Change text to dark for contrast
+    }
+  }
+
+  &--small {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  &--medium {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+
+  &--large {
+    padding: 12px 24px;
+    font-size: 18px;
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

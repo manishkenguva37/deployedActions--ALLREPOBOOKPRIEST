@@ -1,0 +1,11 @@
+.base-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid $primary-tint-2;
+  border-radius: 4px;
+  resize: vertical;
+  &:focus {
+    border-color: $primary-base;
+    outline: none;
+  }
+}
