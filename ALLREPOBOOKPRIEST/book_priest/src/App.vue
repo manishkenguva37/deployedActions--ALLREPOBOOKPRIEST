@@ -6,24 +6,7 @@
       iconPosition="left"
       variant="primary"
     />
-    <p>helllo welcome   
-     # Build artiqui
-- name: Build artiqui
-  run: |
-    cd ALLREPOBOOKPRIEST/artiqui
-    npm install
-    npm run build
-    npm pack  # creates artiqui-<version>.tgz
 
-# Build book_priest
-- name: Build book_priest
-  run: |
-    cd ALLREPOBOOKPRIEST/book_priest
-    npm install ../artiqui/artiqui-*.tgz
-    npm install
-    npm run build
-    
-    vercel world</p>
 
     <!-- Button with right icon -->
     <AUButton

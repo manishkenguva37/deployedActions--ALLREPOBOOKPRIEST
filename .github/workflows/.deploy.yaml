@@ -14,38 +14,40 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
+      # 1️⃣ Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # Build artiqui and pack it
+      # 3️⃣ Build artiqui
       - name: Build artiqui
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
-          npm run build
-          npm pack  # creates artiqui-<version>.tgz
+          npm run build          # Build dist/ first
+          npm pack               # Create artiqui-<version>.tgz
 
-      # Build book_priest with packed artiqui
+      # 4️⃣ Build book_priest using packed artiqui
       - name: Build book_priest
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          npm install ../artiqui/artiqui-*.tgz
-          npm install
-          npm run build
+          npm install ../artiqui/artiqui-*.tgz  # Install packed artiqui with dist
+          npm install                             # Install other dependencies
+          npm run build                           # Build book_priest
 
-      # Install Vercel CLI
+      # 5️⃣ Install Vercel CLI
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # Pull Vercel Project Settings
+      # 6️⃣ Pull Vercel project settings for book_priest
       - name: Pull Vercel Project Settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # Deploy book_priest
+      # 7️⃣ Deploy book_priest to Vercel
       - name: Deploy to Vercel
         run: vercel deploy --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
