@@ -14,38 +14,45 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
-      # 1️⃣ Checkout repository
+      # 1️⃣ Get the code
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       # 2️⃣ Setup Node
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 3️⃣ Install and build artiqui
+      # 3️⃣ Build the library (artiqui)
       - name: Install and Build artiqui
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
           npm run build
 
-      # 4️⃣ Install book_priest dependencies (including local artiqui) and build
-      - name: Install book_priest deps and build
+      # 4️⃣ Build the main app (book_priest)
+      - name: Install and Build book_priest
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          npm install          # Will install local "artiqui" from ../artiqui
-          npm run build         # Build book_priest
+          npm install
+          npm run build
 
       # 5️⃣ Install Vercel CLI
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # 6️⃣ Pull Vercel Project Settings
-      - name: Pull Vercel Project Settings
-        run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
+      # 6️⃣ Pull Vercel Project Settings (Required for build)
+      - name: Pull Vercel Settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ALLREPOBOOKPRIEST/book_priest
 
-      # 7️⃣ Deploy book_priest to Vercel
+      # 7️⃣ Build for Vercel (This creates the .vercel/output folder)
+      - name: Vercel Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ALLREPOBOOKPRIEST/book_priest
+
+      # 8️⃣ Deploy the ALREADY BUILT files to production
       - name: Deploy to Vercel
-        run: vercel deploy --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ALLREPOBOOKPRIEST/book_priest
