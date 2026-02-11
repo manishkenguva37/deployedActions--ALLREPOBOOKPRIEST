@@ -1,30 +1,56 @@
+# Workflow name (this shows in GitHub Actions tab)
 name: Build All Repo Apps
 
+# Trigger: run this workflow whenever code is pushed to main branch
 on:
   push:
     branches:
       - main
 
 jobs:
+  # Job name (can be anything)
   buildBOOKAPP:
+    # Runner (GitHub virtual machine)
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+    # Environment variables (used by Vercel CLI)
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
+    steps:
+      # Step 1: Checkout your GitHub repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node.js
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 20   # Node version
 
+      # Step 3: Build artiqui project
       - name: Build artiqui
         run: |
-          cd ALLREPOBOOKPRIEST/artiqui
-          npm install
-          npm run build
+          cd ALLREPOBOOKPRIEST/artiqui   # Go inside folder
+          npm install                   # Install dependencies
+          npm run build                 # Run build script
 
+      # Step 4: Build book_priest project
       - name: Build book_priest
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
           npm install
           npm run build
+
+      # Step 5: Install Vercel CLI globally
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      # Step 6: Pull Vercel project configuration
+      - name: Pull Vercel Project Settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Step 7: Deploy to Vercel Production
+      - name: Deploy to Vercel
+        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
