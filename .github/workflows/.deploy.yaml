@@ -1,37 +1,65 @@
 name: Build All Repo Apps
+
 on:
   push:
-    branches: [feature/DEPLOYV2]
+    branches:
+      - feature/DEPLOYV2
 
 jobs:
   buildBOOKAPP:
     runs-on: ubuntu-latest
+
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # 1️⃣ Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: "npm"
 
-      - name: Build Library
+      # 3️⃣ Build and pack artiqui
+      - name: Build artiqui and pack
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
           npm run build
-          ls dist # This verifies the file router-engine.es.js exists
+          npm pack
 
-      - name: Build App
+      # 4️⃣ Install book_priest dependencies including packed artiqui
+      - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
+          npm install ../artiqui/artiqui-*.tgz
           npm install
           npm run build
 
-      - name: Deploy
+      # 5️⃣ Install Vercel CLI
+      - name: Install Vercel CLI
+        run: npm install --global vercel
+
+      # 6️⃣ Pull Vercel project settings
+      - name: Pull Vercel Project Settings
+        run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 7️⃣ Configure Git author for Vercel
+      - name: Set Git user for Vercel
         run: |
-          npm install -g vercel
-          cd ALLREPOBOOKPRIEST/book_priest
-          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-          vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          git config --global user.email "manimoney468@gmail.com"
+          git config --global user.name "Mani Money"
+
+      # 8️⃣ Pre-build Vercel artifacts
+      - name: Vercel Build
+        run: vercel build --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 9️⃣ Deploy to Vercel (prebuilt)
+      - name: Deploy to Vercel
+        run: vercel deploy --prebuilt --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
