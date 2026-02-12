@@ -3,7 +3,7 @@ name: Build All Repo Apps
 on:
   push:
     branches:
-      - main
+      - feature/DEPLOYV2
 
 jobs:
   buildBOOKAPP:
