@@ -3,7 +3,7 @@ name: Build All Repo Apps
 on:
   push:
     branches:
-      - main
+      - feature/DEPLOYV2
 
 jobs:
   buildBOOKAPP:
@@ -23,8 +23,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          # Points to your main project's lock file for better speed
+          cache-dependency-path: './ALLREPOBOOKPRIEST/book_priest/package-lock.json'
 
       # 3️⃣ Build the library (artiqui)
+      # This MUST be built first so book_priest can find its files
       - name: Install and Build artiqui
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
@@ -42,17 +46,20 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # 6️⃣ Pull Vercel Project Settings (Required for build)
+      # 6️⃣ Pull Vercel Project Settings
+      # This creates the .vercel/project.json file needed for the build
       - name: Pull Vercel Settings
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ALLREPOBOOKPRIEST/book_priest
 
-      # 7️⃣ Build for Vercel (This creates the .vercel/output folder)
+      # 7️⃣ Build for Vercel
+      # This compiles everything into the .vercel/output folder
       - name: Vercel Build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ALLREPOBOOKPRIEST/book_priest
 
-      # 8️⃣ Deploy the ALREADY BUILT files to production
+      # 8️⃣ Deploy the ALREADY BUILT files
+      # The --prebuilt flag tells Vercel: "Don't install or build, just host"
       - name: Deploy to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ALLREPOBOOKPRIEST/book_priest
