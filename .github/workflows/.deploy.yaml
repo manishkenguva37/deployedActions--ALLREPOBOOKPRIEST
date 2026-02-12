@@ -13,11 +13,15 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      # This helps link the deployment to your GitHub identity
       VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          # Required to allow the runner to commit back/modify history if needed
+          fetch-depth: 0 
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -32,8 +36,6 @@ jobs:
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
           npm run build
-          # Verification: Check if the file exists locally first
-          ls -R dist/
           npm pack
           echo "LIB_TARBALL=$(ls artiqui-*.tgz)" >> $GITHUB_ENV
 
@@ -43,10 +45,6 @@ jobs:
           cd ALLREPOBOOKPRIEST/book_priest
           npm uninstall artiqui
           npm install ../artiqui/${{ env.LIB_TARBALL }}
-          
-          echo "--- Content of node_modules/artiqui ---"
-          ls -R node_modules/artiqui
-          
           npm run build
 
       - name: Install Vercel CLI
@@ -55,14 +53,22 @@ jobs:
       - name: Pull Vercel project settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Set Git user for Vercel (Mani Money Step)
+      # 7️⃣ Set Git user for Vercel
       - name: Set Git user for Vercel
         run: |
           git config --global user.email "manimoney468@gmail.com"
           git config --global user.name "Mani Money"
 
+      # 7.5 🚀 NEW: Create a deployment-specific commit
+      # This ensures the 'author' of the current HEAD matches Vercel's requirements
+      - name: Authorize Deployment Identity
+        run: |
+          git commit --allow-empty -m "Deployment Trigger: Authorized by Mani Money"
+
       - name: Vercel Build
         run: vercel build --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
-        run: vercel deploy --prebuilt --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # Use --force to ensure Vercel doesn't use a cached version of the previous 'unauthorized' commit
+          vercel deploy --prebuilt --prod --force --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
