@@ -16,7 +16,7 @@ jobs:
       VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
 
     steps:
-      # 1️⃣ Checkout
+      # 1️⃣ Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -35,30 +35,33 @@ jobs:
           npm install
           npm run build
           npm pack
-          echo "PACKAGE_NAME=$(ls artiqui-*.tgz)" >> $GITHUB_ENV
+          # Save the exact filename to use in the next step
+          echo "LIB_TARBALL=$(ls artiqui-*.tgz)" >> $GITHUB_ENV
 
-      # 4️⃣ Install and Fix Vite Path
-      - name: Install deps and build book_priest
+      # 4️⃣ Install dependencies for book_priest
+      - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          # Remove old link and install the fresh tarball
+          # Remove any existing link/package to avoid Vite resolution conflicts
           npm uninstall artiqui
-          npm install ../artiqui/${{ env.PACKAGE_NAME }}
+          # Install from the freshly packed tarball
+          npm install ../artiqui/${{ env.LIB_TARBALL }}
           
-          # Debug: Show where the file is so we can see why it's failing
+          # Debug: Verify the file actually exists in node_modules
+          echo "Verifying artiqui installation..."
           find node_modules/artiqui -name "router-engine.es.js"
           
           npm run build
 
-      # 5️⃣ Vercel Setup
+      # 5️⃣ Install Vercel CLI
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # 6️⃣ Pull Vercel Settings
+      # 6️⃣ Pull Vercel project settings
       - name: Pull Vercel Project Settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Configure Git author (Your requested step)
+      # 7️⃣ Set Git user for Vercel (YOUR REQUESTED EMAIL)
       - name: Set Git user for Vercel
         run: |
           git config --global user.email "manimoney468@gmail.com"
