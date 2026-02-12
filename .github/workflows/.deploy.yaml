@@ -3,7 +3,7 @@ name: Build All Repo Apps
 on:
   push:
     branches:
-      - feature/DEPLOYV2
+      - main
 
 jobs:
   buildBOOKAPP:
@@ -14,52 +14,46 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
-      # 1️⃣ Get the code
+      # 1️⃣ Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       # 2️⃣ Setup Node
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 20
-          cache: 'npm'
-          # Points to your main project's lock file for better speed
-          cache-dependency-path: './ALLREPOBOOKPRIEST/book_priest/package-lock.json'
 
-      # 3️⃣ Build the library (artiqui)
-      # This MUST be built first so book_priest can find its files
-      - name: Install and Build artiqui
+      # 3️⃣ Build and pack artiqui
+      - name: Build artiqui and pack
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
-          npm run build
+          npm run build      # ensure dist/ exists
+          npm pack           # creates artiqui-<version>.tgz
 
-      # 4️⃣ Build the main app (book_priest)
-      - name: Install and Build book_priest
+      # 4️⃣ Install book_priest dependencies including packed artiqui
+      - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          npm install
-          npm run build
+          npm install ../artiqui/artiqui-*.tgz   # install built artiqui
+          npm install                             # install remaining deps
+          npm run build                           # build book_priest
 
       # 5️⃣ Install Vercel CLI
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # 6️⃣ Pull Vercel Project Settings
-      # This creates the .vercel/project.json file needed for the build
-      - name: Pull Vercel Settings
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ALLREPOBOOKPRIEST/book_priest
+      # 6️⃣ Pull Vercel project settings
+      - name: Pull Vercel Project Settings
+        run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Build for Vercel
-      # This compiles everything into the .vercel/output folder
-      - name: Vercel Build
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ALLREPOBOOKPRIEST/book_priest
+      # 7️⃣ Set Git author to match Vercel token owner
+      - name: Set Git user for Vercel
+        run: |
+          git config --global user.email "manimoney468@gmail.com"
+          git config --global user.name "Mani Money"
 
-      # 8️⃣ Deploy the ALREADY BUILT files
-      # The --prebuilt flag tells Vercel: "Don't install or build, just host"
+      # 8️⃣ Deploy book_priest to Vercel
       - name: Deploy to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-        working-directory: ALLREPOBOOKPRIEST/book_priest
+        run: vercel deploy --prebuilt --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
