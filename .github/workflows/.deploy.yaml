@@ -53,11 +53,7 @@ jobs:
       - name: Pull Vercel project settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Set Git user for Vercel
-      - name: Set Git user for Vercel
-        run: |
-          git config --global user.email "manimoney468@gmail.com"
-          git config --global user.name "Mani Money"
+      
 
       # 7.5 🚀 NEW: Create a deployment-specific commit
       # This ensures the 'author' of the current HEAD matches Vercel's requirements
