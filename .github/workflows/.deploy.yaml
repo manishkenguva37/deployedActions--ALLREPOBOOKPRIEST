@@ -13,21 +13,19 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      # This helps Vercel identify you via your GitHub username
       VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
 
     steps:
-      # 1️⃣ Checkout repository
+      # 1️⃣ Checkout
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node (Fixed Cache Path)
+      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-          # Pointing this to the subfolder fixes the "lock file not found" error
           cache-dependency-path: "ALLREPOBOOKPRIEST/book_priest/package-lock.json"
 
       # 3️⃣ Build and pack artiqui
@@ -37,25 +35,30 @@ jobs:
           npm install
           npm run build
           npm pack
+          echo "PACKAGE_NAME=$(ls artiqui-*.tgz)" >> $GITHUB_ENV
 
-      # 4️⃣ Install book_priest dependencies including packed artiqui
-      - name: Install book_priest deps and build
+      # 4️⃣ Install and Fix Vite Path
+      - name: Install deps and build book_priest
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          # Install the specific library file we just created
-          npm install ../artiqui/artiqui-*.tgz
-          npm install
+          # Remove old link and install the fresh tarball
+          npm uninstall artiqui
+          npm install ../artiqui/${{ env.PACKAGE_NAME }}
+          
+          # Debug: Show where the file is so we can see why it's failing
+          find node_modules/artiqui -name "router-engine.es.js"
+          
           npm run build
 
-      # 5️⃣ Install Vercel CLI
+      # 5️⃣ Vercel Setup
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # 6️⃣ Pull Vercel project settings
+      # 6️⃣ Pull Vercel Settings
       - name: Pull Vercel Project Settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Configure Git author for Vercel (The email step)
+      # 7️⃣ Configure Git author (Your requested step)
       - name: Set Git user for Vercel
         run: |
           git config --global user.email "manimoney468@gmail.com"
@@ -65,6 +68,6 @@ jobs:
       - name: Vercel Build
         run: vercel build --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 9️⃣ Deploy to Vercel (prebuilt)
+      # 9️⃣ Deploy to Vercel
       - name: Deploy to Vercel
         run: vercel deploy --prebuilt --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
