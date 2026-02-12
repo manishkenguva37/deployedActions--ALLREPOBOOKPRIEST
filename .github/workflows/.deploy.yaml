@@ -13,15 +13,12 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      # This helps link the deployment to your GitHub identity
-      VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          # Required to allow the runner to commit back/modify history if needed
-          fetch-depth: 0 
+          fetch-depth: 0 # Required to allow the runner to create a new commit
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -30,7 +27,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: "ALLREPOBOOKPRIEST/book_priest/package-lock.json"
 
-      # 3️⃣ Build and pack artiqui
+      # 3️⃣ Build and pack library
       - name: Build artiqui and pack
         run: |
           cd ALLREPOBOOKPRIEST/artiqui
@@ -39,7 +36,7 @@ jobs:
           npm pack
           echo "LIB_TARBALL=$(ls artiqui-*.tgz)" >> $GITHUB_ENV
 
-      # 4️⃣ Install and Build book_priest
+      # 4️⃣ Install and Build main app
       - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
@@ -50,21 +47,24 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      - name: Pull Vercel project settings
+      - name: Pull Vercel Settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      
+      # 7️⃣ Set Git user for Vercel (YOUR SPECIFIC REQUEST)
+      - name: Set Git user for Vercel
+        run: |
+          git config --global user.name "manishkenguva37"
+          git config --global user.email "manishkenguva37@gmail.com"
 
-      # 7.5 🚀 NEW: Create a deployment-specific commit
-      # This ensures the 'author' of the current HEAD matches Vercel's requirements
+      # 7.5 🚀 THE MAGIC STEP: Sign the deployment
       - name: Authorize Deployment Identity
         run: |
-          git commit --allow-empty -m "Deployment Trigger: Authorized by Mani Money"
+          git commit --allow-empty -m "Authorize deployment for manishkenguva37"
 
       - name: Vercel Build
         run: vercel build --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
         run: |
-          # Use --force to ensure Vercel doesn't use a cached version of the previous 'unauthorized' commit
+          # --force ensures the new authorized commit is recognized immediately
           vercel deploy --prebuilt --prod --force --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
