@@ -16,11 +16,9 @@ jobs:
       VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
 
     steps:
-      # 1️⃣ Checkout repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -34,43 +32,37 @@ jobs:
           cd ALLREPOBOOKPRIEST/artiqui
           npm install
           npm run build
+          # Verification: Check if the file exists locally first
+          ls -R dist/
           npm pack
-          # Save the exact filename to use in the next step
           echo "LIB_TARBALL=$(ls artiqui-*.tgz)" >> $GITHUB_ENV
 
-      # 4️⃣ Install dependencies for book_priest
+      # 4️⃣ Install and Build book_priest
       - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
-          # Remove any existing link/package to avoid Vite resolution conflicts
           npm uninstall artiqui
-          # Install from the freshly packed tarball
           npm install ../artiqui/${{ env.LIB_TARBALL }}
           
-          # Debug: Verify the file actually exists in node_modules
-          echo "Verifying artiqui installation..."
-          find node_modules/artiqui -name "router-engine.es.js"
+          echo "--- Content of node_modules/artiqui ---"
+          ls -R node_modules/artiqui
           
           npm run build
 
-      # 5️⃣ Install Vercel CLI
       - name: Install Vercel CLI
         run: npm install --global vercel
 
-      # 6️⃣ Pull Vercel project settings
-      - name: Pull Vercel Project Settings
+      - name: Pull Vercel project settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Set Git user for Vercel (YOUR REQUESTED EMAIL)
+      # 7️⃣ Set Git user for Vercel (Mani Money Step)
       - name: Set Git user for Vercel
         run: |
           git config --global user.email "manimoney468@gmail.com"
           git config --global user.name "Mani Money"
 
-      # 8️⃣ Pre-build Vercel artifacts
       - name: Vercel Build
         run: vercel build --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 9️⃣ Deploy to Vercel
       - name: Deploy to Vercel
         run: vercel deploy --prebuilt --prod --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
