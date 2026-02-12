@@ -3,6 +3,7 @@ name: Build All Repo Apps
 on:
   push:
     branches:
+      - main
       - feature/DEPLOYV2
 
 jobs:
@@ -12,6 +13,7 @@ jobs:
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      # This helps Vercel identify you via your GitHub username
       VERCEL_GIT_COMMIT_AUTHOR_LOGIN: ${{ github.actor }}
 
     steps:
@@ -19,12 +21,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node
+      # 2️⃣ Setup Node (Fixed Cache Path)
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
+          # Pointing this to the subfolder fixes the "lock file not found" error
+          cache-dependency-path: "ALLREPOBOOKPRIEST/book_priest/package-lock.json"
 
       # 3️⃣ Build and pack artiqui
       - name: Build artiqui and pack
@@ -38,6 +42,7 @@ jobs:
       - name: Install book_priest deps and build
         run: |
           cd ALLREPOBOOKPRIEST/book_priest
+          # Install the specific library file we just created
           npm install ../artiqui/artiqui-*.tgz
           npm install
           npm run build
@@ -50,7 +55,7 @@ jobs:
       - name: Pull Vercel Project Settings
         run: vercel pull --yes --environment=production --cwd=ALLREPOBOOKPRIEST/book_priest --token=${{ secrets.VERCEL_TOKEN }}
 
-      # 7️⃣ Configure Git author for Vercel
+      # 7️⃣ Configure Git author for Vercel (The email step)
       - name: Set Git user for Vercel
         run: |
           git config --global user.email "manimoney468@gmail.com"
